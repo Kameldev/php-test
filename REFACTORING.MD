@@ -419,7 +419,7 @@ class TemplateManager {
 ```
 
 #### **Principe appliqué**
-**Dependency Injection** + **Backward Compatibility**
+**Dependency Injection**
 
 #### **Stratégie de cette étape**
 Permettre l'injection moderne tout en gardant l'usage simple pour les utilisateurs existants.
@@ -496,7 +496,7 @@ public function testQuotePlaceholderReplacement() {
 - **Nouveau repository** : Interface déjà définie
 - **Tests de régression** : Détection automatique des problèmes
 
-### **Standards professionnels**
+### **Standards**
 - **PSR-1/4/12** respectés partout
 - **SOLID** appliqué rigoureusement
 - **Design patterns** modernes (Strategy, Factory, DI)
