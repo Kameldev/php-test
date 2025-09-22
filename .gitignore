@@ -1,0 +1,11 @@
+.idea/
+vendor/
+composer.lock
+
+# Docker local setup (non-tracké)
+docker-compose.local.yml
+Makefile.local
+Dockerfile.local
+.docker/
+.env.local
+setup-local.sh
