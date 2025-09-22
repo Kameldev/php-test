@@ -1,18 +1,17 @@
 <?php
 
-require_once __DIR__ . '/../src/Entity/Destination.php';
-require_once __DIR__ . '/../src/Entity/Quote.php';
-require_once __DIR__ . '/../src/Entity/Site.php';
-require_once __DIR__ . '/../src/Entity/Template.php';
-require_once __DIR__ . '/../src/Entity/User.php';
-require_once __DIR__ . '/../src/Helper/SingletonTrait.php';
-require_once __DIR__ . '/../src/Context/ApplicationContext.php';
-require_once __DIR__ . '/../src/Repository/Repository.php';
-require_once __DIR__ . '/../src/Repository/DestinationRepository.php';
-require_once __DIR__ . '/../src/Repository/QuoteRepository.php';
-require_once __DIR__ . '/../src/Repository/SiteRepository.php';
-require_once __DIR__ . '/../src/TemplateManager.php';
+namespace App\Tests;
 
+use App\Context\ApplicationContext;
+use App\Entity\Quote;
+use App\Entity\Template;
+use App\Repository\DestinationRepository;
+use App\TemplateManager;
+use PHPUnit_Framework_TestCase;
+
+/**
+ * Template Manager tests with updated namespaces
+ */
 class TemplateManagerTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -20,6 +19,7 @@ class TemplateManagerTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        // Test setup
     }
 
     /**
@@ -27,20 +27,28 @@ class TemplateManagerTest extends PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
+        // Test cleanup
     }
 
     /**
+     * Test template processing with quote and user data
+     *
      * @test
      */
     public function test()
     {
         $faker = \Faker\Factory::create();
 
-        $destinationId                  = $faker->randomNumber();
-        $expectedDestination = DestinationRepository::getInstance()->getById($destinationId);
-        $expectedUser        = ApplicationContext::getInstance()->getCurrentUser();
+        $destinationId = $faker->randomNumber();
+        $expectedDestination = (new DestinationRepository())->getById($destinationId);
+        $expectedUser = (new ApplicationContext())->getCurrentUser();
 
-        $quote = new Quote($faker->randomNumber(), $faker->randomNumber(), $destinationId, $faker->date());
+        $quote = new Quote(
+            $faker->randomNumber(),
+            $faker->randomNumber(),
+            $destinationId,
+            new \DateTime($faker->date())
+        );
 
         $template = new Template(
             1,
@@ -53,7 +61,9 @@ Merci de nous avoir contacté pour votre livraison à [quote:destination_name].
 Bien cordialement,
 
 L'équipe de Shipper
-");
+"
+        );
+
         $templateManager = new TemplateManager();
 
         $message = $templateManager->getTemplateComputed(
@@ -63,15 +73,22 @@ L'équipe de Shipper
             ]
         );
 
-        $this->assertEquals('Votre livraison à ' . $expectedDestination->countryName, $message->subject);
-        $this->assertEquals("
-Bonjour " . $expectedUser->firstname . ",
+        $this->assertEquals(
+            'Votre livraison à ' . $expectedDestination->getCountryName(),
+            $message->getSubject()
+        );
 
-Merci de nous avoir contacté pour votre livraison à " . $expectedDestination->countryName . ".
+        $this->assertEquals(
+            "
+Bonjour " . ucfirst(mb_strtolower($expectedUser->getFirstname())) . ",
+
+Merci de nous avoir contacté pour votre livraison à " . $expectedDestination->getCountryName() . ".
 
 Bien cordialement,
 
 L'équipe de Shipper
-", $message->content);
+",
+            $message->getContent()
+        );
     }
 }
