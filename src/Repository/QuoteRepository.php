@@ -1,12 +1,19 @@
 <?php
 
-class QuoteRepository implements Repository
-{
-    use SingletonTrait;
+namespace App\Repository;
 
+use App\Contract\RepositoryInterface;
+use App\Entity\Quote;
+use DateTime;
+
+/**
+ * Quote repository implementation without Singleton pattern
+ * Provides access to Quote entities
+ */
+class QuoteRepository implements RepositoryInterface
+{
     /**
      * @param int $id
-     *
      * @return Quote
      */
     public function getById($id)

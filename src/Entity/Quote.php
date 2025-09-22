@@ -1,13 +1,41 @@
 <?php
 
+namespace App\Entity;
+
+use DateTime;
+
+/**
+ * Quote entity (pure data model without rendering logic)
+ */
 class Quote
 {
-    public $id;
-    public $siteId;
-    public $destinationId;
-    public $dateQuoted;
+    /**
+     * @var int
+     */
+    private $id;
 
-    public function __construct($id, $siteId, $destinationId, $dateQuoted)
+    /**
+     * @var int
+     */
+    private $siteId;
+
+    /**
+     * @var int
+     */
+    private $destinationId;
+
+    /**
+     * @var DateTime
+     */
+    private $dateQuoted;
+
+    /**
+     * @param int $id
+     * @param int $siteId
+     * @param int $destinationId
+     * @param DateTime $dateQuoted
+     */
+    public function __construct(int $id, int $siteId, int $destinationId, DateTime $dateQuoted)
     {
         $this->id = $id;
         $this->siteId = $siteId;
@@ -15,13 +43,35 @@ class Quote
         $this->dateQuoted = $dateQuoted;
     }
 
-    public static function renderHtml(Quote $quote)
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
-        return '<p>' . $quote->id . '</p>';
+        return $this->id;
     }
 
-    public static function renderText(Quote $quote)
+    /**
+     * @return int
+     */
+    public function getSiteId(): int
     {
-        return (string) $quote->id;
+        return $this->siteId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDestinationId(): int
+    {
+        return $this->destinationId;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDateQuoted(): DateTime
+    {
+        return $this->dateQuoted;
     }
 }

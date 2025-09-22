@@ -1,19 +1,23 @@
 <?php
 
-use Faker\Factory;
+namespace App\Repository;
 
-class SiteRepository implements Repository
+use App\Contract\RepositoryInterface;
+use App\Entity\Site;
+
+/**
+ * Site repository implementation without Singleton pattern
+ * Provides access to Site entities
+ */
+class SiteRepository implements RepositoryInterface
 {
-    use SingletonTrait;
-
-    private $url;
-
     /**
-     * @param int $id
+     * Retrieve a Site by its ID
      *
+     * @param int $id
      * @return Site
      */
-    public function getById($id)
+    public function getById($id): Site
     {
         // DO NOT MODIFY THIS METHOD
         $generator = Faker\Factory::create();

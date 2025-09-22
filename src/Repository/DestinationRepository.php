@@ -1,13 +1,18 @@
 <?php
 
-use Faker\Factory;
+namespace App\Repository;
 
-class DestinationRepository implements Repository
+use App\Contract\RepositoryInterface;
+use App\Entity\Destination;
+
+/**
+ * Destination repository implementation without Singleton pattern
+ * Provides access to Destination entities
+ */
+class DestinationRepository implements RepositoryInterface
 {
-    use SingletonTrait;
     /**
      * @param int $id
-     *
      * @return Destination
      */
     public function getById($id)

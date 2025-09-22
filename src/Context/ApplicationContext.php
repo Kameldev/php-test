@@ -1,31 +1,64 @@
 <?php
 
-class ApplicationContext
-{
-    use SingletonTrait;
+namespace App\Context;
 
+use App\Contract\ApplicationContextInterface;
+use App\Entity\Site;
+use App\Entity\User;
+use Faker\Factory;
+
+/**
+ * Application context providing current user and site information
+ * Without Singleton pattern for better testability
+ */
+class ApplicationContext implements ApplicationContextInterface
+{
     /**
      * @var Site
      */
     private $currentSite;
+
     /**
      * @var User
      */
     private $currentUser;
 
-    protected function __construct()
+    /**
+     * Initialize application context with fake data
+     */
+    public function __construct()
     {
-        $faker = \Faker\Factory::create();
-        $this->currentSite = new Site($faker->randomNumber(), $faker->url);
-        $this->currentUser = new User($faker->randomNumber(), $faker->firstName, $faker->lastName, $faker->email);
+        $faker = Factory::create();
+
+        $this->currentSite = new Site(
+            $faker->randomNumber(),
+            $faker->url
+        );
+
+        $this->currentUser = new User(
+            $faker->randomNumber(),
+            $faker->firstName,
+            $faker->lastName,
+            $faker->email
+        );
     }
 
-    public function getCurrentSite()
+    /**
+     * Get the current site
+     *
+     * @return Site
+     */
+    public function getCurrentSite(): Site
     {
         return $this->currentSite;
     }
 
-    public function getCurrentUser()
+    /**
+     * Get the current user
+     *
+     * @return User
+     */
+    public function getCurrentUser(): User
     {
         return $this->currentUser;
     }
